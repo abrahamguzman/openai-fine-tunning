@@ -1,26 +1,29 @@
 # CONSEJO: Comentar/Descomentar bloque de código --> Alt + Shift + A
 
-from openai import OpenAI
-from pprint import pprint 
+from openai import OpenAI 
+from utils.print import print_job_info
 client = OpenAI()
 
 
 # PASO1: Subir archivo de entrenamiento
-""" client.files.create(
-  file=open("acusacionfinal-gpt3.jsonl", "rb"),
+""" ruta_archivo_entrenamiento = "archivos-entrenamiento/entreno-v3.jsonl"
+client.files.create(
+  file=open(ruta_archivo_entrenamiento, "rb"),
   purpose="fine-tune"
 ) """
 
 
 # PASO2: Crear job/trabajo para fine-tuning
-""" client.fine_tuning.jobs.create(
-  training_file="file-baMWKF9mgLfl6KG9BVzq39rC", 
-  model="gpt-3.5-turbo" # gpt-3.5-turbo
+""" id_archivo_entrenamiento = "file-Nrak0jDqq5498TSEGRporSr9"
+client.fine_tuning.jobs.create(
+  training_file=id_archivo_entrenamiento, 
+  model="gpt-3.5-turbo", # gpt-3.5-turbo
+  hyperparameters=4
 ) """
 
 # OPCIONAL: Ver estado de trabajos
-pprint(client.fine_tuning.jobs.list(limit=1))
-id_job = "ftjob-JHexJxf1vmkU5ql84a2UOfb1"
+ultimo_job = client.fine_tuning.jobs.list(limit=1)
+print_job_info(ultimo_job.data[0])
 #pprint(client.fine_tuning.jobs.retrieve(id_job))
 
 
