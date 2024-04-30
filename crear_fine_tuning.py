@@ -6,25 +6,28 @@ client = OpenAI()
 
 
 # PASO1: Subir archivo de entrenamiento
-""" ruta_archivo_entrenamiento = "archivos-entrenamiento/entreno-v3.jsonl"
-client.files.create(
+ruta_archivo_entrenamiento = "archivos-entrenamiento/entreno-v3.jsonl" # ¡ATENCIÓN! Cambiar por la ruta de tu archivo
+
+archivo_entrenamiento = client.files.create(
   file=open(ruta_archivo_entrenamiento, "rb"),
   purpose="fine-tune"
-) """
+)
+print(f'Id de archivo cargado: {archivo_entrenamiento.id}')
 
 
 # PASO2: Crear job/trabajo para fine-tuning
-""" id_archivo_entrenamiento = "file-Nrak0jDqq5498TSEGRporSr9"
-client.fine_tuning.jobs.create(
+id_archivo_entrenamiento = archivo_entrenamiento.id # No es necesario cambiar
+
+trabajo_subido = client.fine_tuning.jobs.create(
   training_file=id_archivo_entrenamiento, 
   model="gpt-3.5-turbo", # gpt-3.5-turbo
-  hyperparameters=4
-) """
+)
+print(f"Trabajo subido correctamente: {trabajo_subido.id}")
 
-# OPCIONAL: Ver estado de trabajos
+
+# OPCIONAL: Verifica estado del job
 ultimo_job = client.fine_tuning.jobs.list(limit=1)
 print_job_info(ultimo_job.data[0])
-#pprint(client.fine_tuning.jobs.retrieve(id_job))
 
 
 # OPCIONAL: PRUEBA DE CHAT
